@@ -45,12 +45,12 @@ def playknot(knotline):
             # print(ilines[lineiter])
 
             # Finds textlines
-            if not ilines[lineiter].startswith(("+","*","-")):
+            if not ilines[lineiter].startswith(("+","*","-","~")):
                 # Replaces variables with the variable contents
-                if re.search(r'{(?P<variable>\w+)}', ilines[lineiter]):
-                    textline = re.search(r'{(?P<varname>\w+)}', ilines[lineiter])
-                    varcontent = globals()[textline.group("varname")]
-                    var = "{"+str(textline.group("varname"))+"}"
+                if re.search(r'{(?P<varname>\w+)}', ilines[lineiter]):
+                    varline = re.search(r'{(?P<varname>\w+)}', ilines[lineiter])
+                    varcontent = globals()[varline.group("varname")]
+                    var = "{"+str(varline.group("varname"))+"}"
                     patched_line = ilines[lineiter].replace(var, varcontent)
                     print(patched_line)
                 else:
@@ -58,12 +58,15 @@ def playknot(knotline):
 
             # Finds choicelines
             elif ilines[lineiter].startswith('+' or '*'):
+            
                 # print(ilines[lineiter])
 
                 # Finds choicelines
                 if re.match(r'([+]|[*])(?P<text>.*)\[(?P<previewtext>.*)\](?P<fulltext>.*)', ilines[lineiter]):
                     option = re.match(r'(.)(?P<text>.*)\[(?P<previewtext>.*)\](?P<fulltext>.*)', ilines[lineiter])
                     optionnumber += 1
+                    goto = "end"
+
                     if re.match(r'-> DONE', ilines[lineiter+1]):
                         print("End of story")
                         return
@@ -81,14 +84,33 @@ def playknot(knotline):
 
                         # knotline = findknot(goto)
                         # playknot(knotline)
-                        # # print(knotline
+                        # # print(
+                        
+
 
                     globals()["option"+str(optionnumber)] = goto
                     globals()["optionprevtext"+str(optionnumber)] = option.group("text") + option.group("previewtext")
                     globals()["optionfulltext"+str(optionnumber)] = option.group ("text") + option.group("fulltext")
-                    print(str(optionnumber) + ": " + option.group("previewtext"))
+
+                    # Replaces variables with the variable contents 
+                    if re.search(r'{(?P<varname>\w+)}', globals()["optionprevtext"+str(optionnumber)]):
+                        print("Found in prev")
+                        varline = re.search(r'{(?P<varname>\w+)}', globals()["optionprevtext"+str(optionnumber)])
+                        varcontent = globals()[varline.group("varname")]
+                        var = "{"+str(varline.group("varname"))+"}"
+                        globals()["optionprevtext"+str(optionnumber)] = globals()["optionprevtext"+str(optionnumber)].replace(var, varcontent)
+
+                    if re.search(r'{(?P<varname>\w+)}', globals()["optionfulltext"+str(optionnumber)]):
+                        print("Found in full")
+                        varline = re.search(r'{(?P<varname>\w+)}', globals()["optionfulltext"+str(optionnumber)])
+                        varcontent = str(globals()[varline.group("varname")])
+                        var = "{"+str(varline.group("varname"))+"}"
+                        globals()["optionfulltext"+str(optionnumber)] = globals()["optionfulltext"+str(optionnumber)].replace(var, varcontent)
+
+                    print(str(optionnumber) + ": " + globals()["optionprevtext"+str(optionnumber)])
                     # print(globals()["option"+str(optionnumber)]) 
                 elif re.match(r'([+]|[*])(?P<text>.*)', ilines[lineiter]):
+                
                     option = re.match(r'(.)(?P<text>.*)', ilines[lineiter])
                     optionnumber += 1
                     print(str(optionnumber) + ": " + option.group("text"))
@@ -110,9 +132,44 @@ def playknot(knotline):
                         # # print(knotline
 
                     globals()["option"+str(optionnumber)] = goto
-                    globals()["optionfulltext"+str(optionnumber)] = option.group ("text")
-                    print(str(optionnumber) + ": " + option.group("text"))
-                
+                    globals()["optionfulltext"+str(optionnumber)] = option.group("text")
+                    globals()["optionprevtext"+str(optionnumber)] = option.group("text") 
+
+                    # Replaces variables with the variable contents 
+                    if re.search(r'{(?P<varname>\w+)}', globals()["optionfulltext"+str(optionnumber)]):
+                        print("Found in text")
+                        varline = re.search(r'{(?P<varname>\w+)}', globals()["optionfulltext"+str(optionnumber)])
+                        varcontent = str(globals()[varline.group("varname")])
+                        var = "{"+str(varline.group("varname"))+"}"
+                        globals()["optionfulltext"+str(optionnumber)] = globals()["optionfulltext"+str(optionnumber)].replace(var, varcontent)
+
+                    print(str(optionnumber) + ": " + globals()["optionprevtext"+str(optionnumber)])
+
+
+            # Changes variables (Cannot do math) TODO
+            elif ilines[lineiter].startswith('~'):
+                if re.match(r'~ (?P<varname>\w+) = (?P<varnewstate>\w+)', ilines[lineiter]):
+                    varchangeline = re.match(r'~ (?P<varname>\w+) = (?P<varnewstate>\w+)', ilines[lineiter])
+                    varname = varchangeline.group("varname")
+                    varnewstate = varchangeline.group("varnewstate")
+                    globals()[varname] = varnewstate
+            # Handles lone diverts (Not working) TODO
+            # elif ilines[lineiter].startswith('-'):
+            #     if re.match(r'-> DONE', ilines[lineiter]):
+            #         print("End of story")
+            #         return
+            #     elif re.match(r'->(\w)', ilines[lineiter]):
+            #         divert = re.match(r'->(?P<goto>\w*)', ilines[lineiter])
+            #         goto = divert.group("goto")
+
+            #         knotline = findknot(goto)
+            #         playknot(knotline)
+            #     elif re.match(r'-> (\w)', ilines[lineiter+1]):
+            #         divert = re.match(r'-> (?P<goto>\w*)', ilines[lineiter])
+            #         goto = divert.group("goto")
+            #         knotline = findknot(goto)
+            #         playknot(knotline)
+
         print("---")
         chosenoption = input("Press the number of your choice and hit enter. \n")
         chosenknot = findknot(globals()["option"+str(chosenoption)])
@@ -136,7 +193,7 @@ def startink():
             elif re.match(r'VAR (?P<varname>.*) = (?P<var>.*)', line):
                 var = re.match(r'VAR (?P<varname>.*) = (?P<var>.*)', line)
                 var.group("var")
-                globals()[var.group("varname")] = float(var.group("var"))
+                globals()[var.group("varname")] = var.group("var")
 
                 # print(var.group("varname") + " = " + var.group("var"))
 
