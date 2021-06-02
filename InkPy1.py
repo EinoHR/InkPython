@@ -65,7 +65,7 @@ def playknot(knotline):
                 if re.match(r'([+]|[*])(?P<text>.*)\[(?P<previewtext>.*)\](?P<fulltext>.*)', ilines[lineiter]):
                     option = re.match(r'(.)(?P<text>.*)\[(?P<previewtext>.*)\](?P<fulltext>.*)', ilines[lineiter])
                     optionnumber += 1
-                    goto = "end"
+                    goto = "End" #TODO this should be fixed to be non-specific to the testing .ink file, comment line to see error.
 
                     if re.match(r'-> DONE', ilines[lineiter+1]):
                         print("End of story")
