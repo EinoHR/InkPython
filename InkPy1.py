@@ -73,7 +73,7 @@ def playknot(knotline):
                     globals()["optionprevtext"+str(optionnumber)] = option.group("text") + option.group("previewtext")
                     globals()["optionfulltext"+str(optionnumber)] = option.group ("text") + option.group("fulltext")
                     print(str(optionnumber) + ": " + option.group("previewtext"))
-                    print(globals()["option"+str(optionnumber)]) 
+                    # print(globals()["option"+str(optionnumber)]) 
                 elif re.match(r'([+]|[*])(?P<text>.*)', ilines[lineiter]):
                     option = re.match(r'(.)(?P<text>.*)', ilines[lineiter])
                     optionnumber += 1
@@ -98,8 +98,10 @@ def playknot(knotline):
                     globals()["option"+str(optionnumber)] = goto
                     globals()["optionfulltext"+str(optionnumber)] = option.group ("text")
                     print(str(optionnumber) + ": " + option.group("text"))
+        print("---")
         chosenoption = input("Press the number of your choice and hit enter. \n")
         chosenknot = findknot(globals()["option"+str(chosenoption)])
+        print("---")
         print(globals()["optionfulltext"+str(chosenoption)])
         playknot(chosenknot)
 
