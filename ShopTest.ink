@@ -6,7 +6,8 @@ In the shop
 ->start
 
 ==start==
-'Ey {playername}! What do you wish from this old fella?
+Shopkeeper: 'Ey {playername}! What do you wish from this old fella?
+You: Hey ol' man!
 +[buy]You: Lemme get that hoodie.
 -> buy
 +[sell]You: Can I sell you something, got no money?

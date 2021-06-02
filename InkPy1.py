@@ -1,4 +1,5 @@
 import re
+import string
 
 inkfilepath = "ShopTest.ink"
 # inkfiletext = inkfile.read()
@@ -27,26 +28,39 @@ def findknot(knot):
 def playknot(knotline):
     with open(inkfilepath) as i:
         ilines = i.readlines()
-        print(ilines[knotline])
 
-        # Finds choicelines
-        lastchoiceline = knotline
+        lastknotline = knotline-1
 
-        while ilines[lastchoiceline] != '\n':
-            if not lastchoiceline == None:
-                lastchoiceline += 1
-                # print(lastchoiceline)
-                # print(ilines[lastchoiceline])
+        while ilines[lastknotline] != '\n':
+            if not lastknotline == None:
+                lastknotline += 1
+                # print(lastknotline)
+                # print(ilines[lastknotline])
 
-        totalchoicelines = lastchoiceline-knotline-1
+        totalknotlines = lastknotline-knotline-1
 
         optionnumber = 0
-
-        for lineiter in range(totalchoicelines):
-            # print(ilines[lineiter])
+        for lineiter in range(totalknotlines):
             lineiter = lineiter+knotline
-            if ilines[lineiter].startswith('+' or '*'):
-                # print(ilines[lineiter]) 
+            # print(ilines[lineiter])
+
+            # Finds textlines
+            if not ilines[lineiter].startswith(("+","*","-")):
+                # Replaces variables with the variable contents
+                if re.search(r'{(?P<variable>\w+)}', ilines[lineiter]):
+                    textline = re.search(r'{(?P<varname>\w+)}', ilines[lineiter])
+                    varcontent = globals()[textline.group("varname")]
+                    var = "{"+str(textline.group("varname"))+"}"
+                    patched_line = ilines[lineiter].replace(var, varcontent)
+                    print(patched_line)
+                else:
+                    print(ilines[lineiter])
+
+            # Finds choicelines
+            elif ilines[lineiter].startswith('+' or '*'):
+                # print(ilines[lineiter])
+
+                # Finds choicelines
                 if re.match(r'([+]|[*])(?P<text>.*)\[(?P<previewtext>.*)\](?P<fulltext>.*)', ilines[lineiter]):
                     option = re.match(r'(.)(?P<text>.*)\[(?P<previewtext>.*)\](?P<fulltext>.*)', ilines[lineiter])
                     optionnumber += 1
@@ -98,6 +112,7 @@ def playknot(knotline):
                     globals()["option"+str(optionnumber)] = goto
                     globals()["optionfulltext"+str(optionnumber)] = option.group ("text")
                     print(str(optionnumber) + ": " + option.group("text"))
+                
         print("---")
         chosenoption = input("Press the number of your choice and hit enter. \n")
         chosenknot = findknot(globals()["option"+str(chosenoption)])
@@ -110,7 +125,7 @@ def startink():
         for line in i:
             # print(line)
 
-            # Parses variables
+            # Deals with variables at the start
             if re.match(r'VAR (?P<varname>.*) = "(?P<var>.*)"', line):
                 var = re.match(r'VAR (?P<varname>.*) = "(?P<var>.*)"', line)
                 var.group("varname")
@@ -125,7 +140,7 @@ def startink():
 
                 # print(var.group("varname") + " = " + var.group("var"))
 
-            #Find diverts
+            # Deals with diverts at the start
             elif re.match(r'-> DONE', line):
                 print("End of story")
                 return
@@ -146,6 +161,10 @@ def startink():
                 playknot(knotline)
                 return
                 # print(knotline)
+
+
+            elif line != '\n':
+                print(line)
 
 
 startink()
