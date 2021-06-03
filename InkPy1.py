@@ -65,7 +65,7 @@ def playknot(knotline):
                 if re.match(r'([+]|[*])(?P<text>.*)\[(?P<previewtext>.*)\](?P<fulltext>.*)', ilines[lineiter]):
                     option = re.match(r'(.)(?P<text>.*)\[(?P<previewtext>.*)\](?P<fulltext>.*)', ilines[lineiter])
                     optionnumber += 1
-                    goto = None #TODO this should be fixed to be non-specific to the testing .ink file, comment line to see error.
+                    goto = None
                     
                     for divertiter in range(totalknotlines):
                         divertiter = divertiter+knotline+1
@@ -169,6 +169,13 @@ def playknot(knotline):
 
             # Changes variables (Cannot do math) TODO
             elif ilines[lineiter].startswith('~'):
+                # if re.match(r'~ (?P<varname>\w+) = (\w+) (.) (\w+)', ilines[lineiter]):
+                #     # if re.match(r'~ (?P<varname>\w+) = (\d+) (.) (\d+)', ilines[lineiter]): 
+
+                #     varchangeline = re.match(r'~ (?P<varname>\w+) = (?P<varnewstate>\w+)', ilines[lineiter])
+                #     varname = varchangeline.group("varname")
+                #     varnewstate = varchangeline.group("varnewstate")
+                #     globals()[varname] = varnewstate 
                 if re.match(r'~ (?P<varname>\w+) = (?P<varnewstate>\w+)', ilines[lineiter]):
                     varchangeline = re.match(r'~ (?P<varname>\w+) = (?P<varnewstate>\w+)', ilines[lineiter])
                     varname = varchangeline.group("varname")

@@ -23,6 +23,7 @@ Shopkeeper: Oh, this?
 +[Yes! Here you go {money} euros.]You: Yes! Here you go {money} euros.
 ~ money = money - 5
 ~ hashoodie = true
+~ playername = playername + ", my dear customer"
 -> end
 
 ==sell==
@@ -38,6 +39,7 @@ Shopkeeper: Well, I've only got hoodies.
 ==end==
 Your current balance: {money}
 Currenty have a hoodie: {hashoodie}
+The Shopkeeper currently calls you: {playername}
 +[End game]
 -> DONE
 
