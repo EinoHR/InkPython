@@ -5,7 +5,7 @@ VAR hashoodie = false
 In the shop
 
 
-//This is the test .ink file made in just a few minutes for an earlier fantasy game project inside unity using Ink, but edited to use more features to really test parsing ink in python.
+//  This is the test .ink file made in just a few minutes for an earlier fantasy game project inside unity using Ink, but edited to use more features to really test parsing ink in python.
 
 ->start
 

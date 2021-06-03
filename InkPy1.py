@@ -34,14 +34,14 @@ def playknot(knotline):
                 # print(lastknotline)
                 # print(ilines[lastknotline])
 
-        totalknotlines = lastknotline-knotline-1
+        totalknotlines = lastknotline-knotline
 
         optionnumber = 0
         for lineiter in range(totalknotlines):
             lineiter = lineiter+knotline
             # print(ilines[lineiter])
 
-            # Finds textlines
+            # Finds textlines (TODO Somehow finds only two(?) when multiple are present)
             if not ilines[lineiter].startswith(("+","*","-","~")):
                 # Replaces variables with the variable contents
                 if re.search(r'{(?P<varname>\w+)}', ilines[lineiter]):
@@ -66,33 +66,40 @@ def playknot(knotline):
                     optionnumber += 1
                     goto = None
                     
-                    for divertiter in range(totalknotlines):
-                        divertiter = divertiter+knotline+1
-                        # print(ilines[divertiter])
-                        if ilines[divertiter].startswith('-'):
-                            if re.match(r'-> DONE', ilines[divertiter]):
-                                goto = None
-
-                            elif re.match(r'->(\w)', ilines[divertiter]):
-                                divert = re.match(r'->(?P<goto>\w*)', ilines[divertiter])
-                                goto = divert.group("goto")
-
-
-                                # knotline = findknot(goto)
-                                # playknot(knotline)
-                                # print("Found")
-                            elif re.match(r'-> (\w)', ilines[divertiter]):
-                                divert = re.match(r'-> (?P<goto>\w*)', ilines[divertiter])
-                                goto = divert.group("goto")
-
-                                # knotline = findknot(goto)
-                                # playknot(knotline)
-                                # print("Found")
+                    if ilines[lineiter+1].startswith('-'):
+                        if re.match(r'-> DONE', ilines[lineiter+1]):
+                            goto = None
                             
-                            else:
-                                # print("Not found")
-                                goto = None
-                    
+                        elif re.match(r'->(\w)', ilines[lineiter+1]):
+                            divert = re.match(r'->(?P<goto>\w*)', ilines[lineiter+1])
+                            goto = divert.group("goto")
+
+                        elif re.match(r'-> (\w)', ilines[lineiter+1]):
+                            divert = re.match(r'-> (?P<goto>\w*)', ilines[lineiter+1])
+                            goto = divert.group("goto")
+                        
+                        else:
+                            # print("Not found")
+                            goto = None
+                    else:
+                        for divertiter in range(totalknotlines+2):
+                            divertiter = divertiter+knotline
+                            # print(ilines[divertiter])
+                            if ilines[divertiter].startswith('-'):
+                                if re.match(r'-> DONE', ilines[divertiter]):
+                                    goto = None
+                                    
+                                elif re.match(r'->(\w)', ilines[divertiter]):
+                                    divert = re.match(r'->(?P<goto>\w*)', ilines[divertiter])
+                                    goto = divert.group("goto")
+
+                                elif re.match(r'-> (\w)', ilines[divertiter]):
+                                    divert = re.match(r'-> (?P<goto>\w*)', ilines[divertiter])
+                                    goto = divert.group("goto")
+                                
+                                else:
+                                    # print("Not found")
+                                    goto = None
 
                     
 
@@ -225,8 +232,8 @@ def playknot(knotline):
         print("---")
         chosenoption = input("Press the number of your choice and hit enter. \n")
         # print(globals()["option"+str(chosenoption)])
-        if globals()["option"+str(chosenoption)] != None:
-            chosenknot = findknot(globals()["option"+str(chosenoption)])
+        if globals()["optiongoto"+str(chosenoption)] != None:
+            chosenknot = findknot(globals()["optiongoto"+str(chosenoption)])
         else:
             print("---")
             print("End of story")
