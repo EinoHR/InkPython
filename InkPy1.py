@@ -1,7 +1,14 @@
 import re
 import string
 
+# Filepath for the .ink file (relative)
 inkfilepath = "ShopTest.ink"
+
+# Variables used to interface with this like an "api"
+inktextline = ""
+inkstoryended = False
+# globals()["optionprevtext"+str(optionnumber)]
+# globals()["optionfulltext"+str(optionnumber)]
 
 #Finds knots
 def findknot(knot):
@@ -42,8 +49,10 @@ def playknot(knotline):
                     varcontent = globals()[varline.group("varname")]
                     var = "{"+str(varline.group("varname"))+"}"
                     patched_line = ilines[lineiter].replace(var, str(varcontent))
+                    inktextline = patched_line
                     print(patched_line)
                 else:
+                    inktextline = ilines[lineiter]
                     print(ilines[lineiter])
 
             # Finds choicelines
@@ -88,7 +97,7 @@ def playknot(knotline):
                     
 
 
-                    globals()["option"+str(optionnumber)] = goto
+                    globals()["optiongoto"+str(optionnumber)] = goto
                     globals()["optionprevtext"+str(optionnumber)] = option.group("text") + option.group("previewtext")
                     globals()["optionfulltext"+str(optionnumber)] = option.group ("text") + option.group("fulltext")
 
@@ -108,7 +117,7 @@ def playknot(knotline):
                         globals()["optionfulltext"+str(optionnumber)] = globals()["optionfulltext"+str(optionnumber)].replace(var, varcontent)
 
                     print(str(optionnumber) + ": " + globals()["optionprevtext"+str(optionnumber)])
-                    # print(globals()["option"+str(optionnumber)]) 
+                    # print(globals()["optiongoto"+str(optionnumber)]) 
                 elif re.match(r'([+]|[*])(?P<text>.*)', ilines[lineiter]):
                 
                     option = re.match(r'(.)(?P<text>.*)', ilines[lineiter])
@@ -142,7 +151,7 @@ def playknot(knotline):
                                 # print("Not found")
                                 goto = None
 
-                    globals()["option"+str(optionnumber)] = goto
+                    globals()["optiongoto"+str(optionnumber)] = goto
                     globals()["optionfulltext"+str(optionnumber)] = option.group("text")
                     globals()["optionprevtext"+str(optionnumber)] = option.group("text") 
 
@@ -199,6 +208,7 @@ def playknot(knotline):
                 if ilines[lonedivertiter].startswith('-'):
                     if re.match(r'-> DONE', ilines[lonedivertiter]):
                         print("End of story")
+                        inkstoryended = True
                         return
                     elif re.match(r'->(\w)', ilines[lonedivertiter]):
                         divert = re.match(r'->(?P<goto>\w*)', ilines[lonedivertiter])
