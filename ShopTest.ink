@@ -4,6 +4,9 @@ VAR hashoodie = false
 
 In the shop
 
+
+//This is the test .ink file made in just a few minutes for an earlier fantasy game project inside unity using Ink, but edited to use more features to really test parsing ink in python.
+
 ->start
 
 ==start==
@@ -20,10 +23,10 @@ You: Hey ol' man!
 
 ==buy==
 Shopkeeper: Oh, this?
-+[Yes! Here you go {money} euros.]You: Yes! Here you go {money} euros.
++[Yes! Here you go 5 euros.]You: Yes! Here you go {money} euros.
 ~ money = money - 5
 ~ hashoodie = true
-~ playername = playername + ", my dear customer"
+~ playername = playername + ", my dearest customer"
 -> end
 
 ==sell==
@@ -40,6 +43,5 @@ Shopkeeper: Well, I've only got hoodies.
 Your current balance: {money}
 Currenty have a hoodie: {hashoodie}
 The Shopkeeper currently calls you: {playername}
-+[End game]
 -> DONE
 

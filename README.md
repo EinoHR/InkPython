@@ -1,8 +1,9 @@
 ## What works
-* Diverts (Only inside choices or at start, not inside knots without choices)
-* Knots (not everything that can be placed inside of one)
+* Diverts
+* Knots
 * Choices (Non-varying)
-* Variables (Can be changed inside of Ink, Cannot do math, No alternatives)
+* Variables (Basic maths, No "Variable text")
 
 ## Considerations
 * Currently two empty lines must be left at the end of the file for technical reasons
+* Multi-line comments don't work yet, instead use '//' in the front of every line of the multi-line comment.

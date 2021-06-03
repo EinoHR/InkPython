@@ -2,16 +2,6 @@ import re
 import string
 
 inkfilepath = "ShopTest.ink"
-# inkfiletext = inkfile.read()
-# lines = inkfile.readlines()
-
-
-# print(inkfiletext)
-
-# with open(inkfilepath) as i:
-#     for line in i:
-#         print(line)
-#         time.sleep(0.1)
 
 #Finds knots
 def findknot(knot):
@@ -51,7 +41,7 @@ def playknot(knotline):
                     varline = re.search(r'{(?P<varname>\w+)}', ilines[lineiter])
                     varcontent = globals()[varline.group("varname")]
                     var = "{"+str(varline.group("varname"))+"}"
-                    patched_line = ilines[lineiter].replace(var, varcontent)
+                    patched_line = ilines[lineiter].replace(var, str(varcontent))
                     print(patched_line)
                 else:
                     print(ilines[lineiter])
@@ -167,36 +157,60 @@ def playknot(knotline):
                     print(str(optionnumber) + ": " + globals()["optionprevtext"+str(optionnumber)])
 
 
-            # Changes variables (Cannot do math) TODO
+            # Changes variables
             elif ilines[lineiter].startswith('~'):
-                # if re.match(r'~ (?P<varname>\w+) = (\w+) (.) (\w+)', ilines[lineiter]):
-                #     # if re.match(r'~ (?P<varname>\w+) = (\d+) (.) (\d+)', ilines[lineiter]): 
+                if re.match(r'~ (?P<varname>\w+) = (.*) (.) (.*)', ilines[lineiter]):
+                    if re.match(r'~ (?P<varname>\w+) = (\d+) (.) (\d+)', ilines[lineiter]):
+                        varchangeline = re.match(r'~ (?P<varname>\w+) = (?P<num1>\d+) (?P<operator>.) (?P<num2>\d+)', ilines[lineiter])
+                        # if varchangeline.group("operator") = "+":
+                        calculation = varchangeline.group("num1") + varchangeline.group("operator") + varchangeline.group("num1")
+                        globals()[varchangeline.group("varname")] = eval(calculation)
+                    elif re.match(r'~ (?P<varname>\w+) = (\w+) (.) (\d+)', ilines[lineiter]): 
+                        varchangeline = re.match(r'~ (?P<varname>\w+) = (?P<var2name>\w+) (?P<operator>.) (?P<num2>\d+)', ilines[lineiter])
+                        calculation = globals()[varchangeline.group("var2name")] + varchangeline.group("operator") + varchangeline.group("num2")
+                        globals()[varchangeline.group("varname")] = eval(calculation)
+                    elif re.match(r'~ (?P<varname>\w+) = (\d+) (.) (\w+)', ilines[lineiter]): 
+                        varchangeline = re.match(r'~ (?P<varname>\w+) = (?P<num1>\d+) (?P<operator>.) (?P<var2name>\w+)', ilines[lineiter])
+                        calculation = globals()[varchangeline.group("num1")] + varchangeline.group("operator") + varchangeline.group("var2name")
+                        globals()[varchangeline.group("varname")] = eval(calculation)                     
+                    elif re.match(r'~ (?P<varname>\w+) = (\w+) (.) (\w+)', ilines[lineiter]): 
+                        varchangeline = re.match(r'~ (?P<varname>\w+) = (?P<var2name>\d+) (?P<operator>.) (?P<var3name>\w+)', ilines[lineiter])
+                        calculation = globals()[varchangeline.group("var2name")] + varchangeline.group("operator") + varchangeline.group("var3name")
+                        globals()[varchangeline.group("varname")] = eval(calculation)
+                    elif re.match(r'~ (?P<varname>\w+) = (\w+) [+] "(.*)"', ilines[lineiter]):
+                        varchangeline = re.match(r'~ (?P<varname>\w+) = (?P<var2name>\w+) [+] "(?P<appendstr>.*)"', ilines[lineiter])
+                        globals()[varchangeline.group("varname")] = globals()[varchangeline.group("var2name")] + str(varchangeline.group("appendstr"))
+                    elif re.match(r'~ (?P<varname>\w+) = "(.*)" [+] (\w+)', ilines[lineiter]):
+                        varchangeline = re.match(r'~ (?P<varname>\w+) = "(?P<prependstr>.*)" [+] (?P<var2name>\w+)', ilines[lineiter])
+                        globals()[varchangeline.group("varname")] = str(varchangeline("prependstr")) + globals()[varchangeline.group("var2name")]
+                    elif re.match(r'~ (?P<varname>\w+) = "(.*)" [+] "(.*)"', ilines[lineiter]):
+                        varchangeline = re.match(r'~ (?P<varname>\w+) = "(?P<str1>.*)" [+] "(?P<str2>.*)"', ilines[lineiter])
+                        globals()[varchangeline.group("varname")] = str(varchangeline.group("str1")) + str(varchangeline.group("str2"))                                               
 
-                #     varchangeline = re.match(r'~ (?P<varname>\w+) = (?P<varnewstate>\w+)', ilines[lineiter])
-                #     varname = varchangeline.group("varname")
-                #     varnewstate = varchangeline.group("varnewstate")
-                #     globals()[varname] = varnewstate 
-                if re.match(r'~ (?P<varname>\w+) = (?P<varnewstate>\w+)', ilines[lineiter]):
+                elif re.match(r'~ (?P<varname>\w+) = (?P<varnewstate>\w+)', ilines[lineiter]):
                     varchangeline = re.match(r'~ (?P<varname>\w+) = (?P<varnewstate>\w+)', ilines[lineiter])
                     varname = varchangeline.group("varname")
                     varnewstate = varchangeline.group("varnewstate")
                     globals()[varname] = varnewstate
-            # Handles lone diverts (Not working) TODO
-            # elif ilines[lineiter].startswith('-'):
-            #     if re.match(r'-> DONE', ilines[lineiter]):
-            #         print("End of story")
-            #         return
-            #     elif re.match(r'->(\w)', ilines[lineiter]):
-            #         divert = re.match(r'->(?P<goto>\w*)', ilines[lineiter])
-            #         goto = divert.group("goto")
 
-            #         knotline = findknot(goto)
-            #         playknot(knotline)
-            #     elif re.match(r'-> (\w)', ilines[lineiter+1]):
-            #         divert = re.match(r'-> (?P<goto>\w*)', ilines[lineiter])
-            #         goto = divert.group("goto")
-            #         knotline = findknot(goto)
-            #         playknot(knotline)
+            # Handles lone diverts
+            for lonedivertiter in range(totalknotlines):
+                lonedivertiter = lonedivertiter+knotline+1            
+                if ilines[lonedivertiter].startswith('-'):
+                    if re.match(r'-> DONE', ilines[lonedivertiter]):
+                        print("End of story")
+                        return
+                    elif re.match(r'->(\w)', ilines[lonedivertiter]):
+                        divert = re.match(r'->(?P<goto>\w*)', ilines[lonedivertiter])
+                        goto = divert.group("goto")
+
+                        knotline = findknot(goto)
+                        playknot(knotline)
+                    elif re.match(r'-> (\w)', ilines[lonedivertiter+1]):
+                        divert = re.match(r'-> (?P<goto>\w*)', ilines[lonedivertiter])
+                        goto = divert.group("goto")
+                        knotline = findknot(goto)
+                        playknot(knotline)
 
         print("---")
         chosenoption = input("Press the number of your choice and hit enter. \n")
@@ -253,7 +267,16 @@ def startink():
                 return
                 # print(knotline)
 
+            # Deals with comments
+            # Multi-line comments don't work yet
+            # elif re.match(r'/[*](\S\s)[*]/', line):
+            #     print("Comment found")
+            #     pass
 
+            elif re.match(r'//*', line):
+                pass
+
+            # Prints the lines with no special stuff
             elif line != '\n':
                 print(line)
 
