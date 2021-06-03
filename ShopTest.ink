@@ -38,5 +38,6 @@ Shopkeeper: Well, I've only got hoodies.
 ==end==
 Your current balance: {money}
 Currenty have a hoodie: {hashoodie}
++[End game]
 -> DONE
 

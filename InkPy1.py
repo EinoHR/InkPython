@@ -65,27 +65,37 @@ def playknot(knotline):
                 if re.match(r'([+]|[*])(?P<text>.*)\[(?P<previewtext>.*)\](?P<fulltext>.*)', ilines[lineiter]):
                     option = re.match(r'(.)(?P<text>.*)\[(?P<previewtext>.*)\](?P<fulltext>.*)', ilines[lineiter])
                     optionnumber += 1
-                    goto = "End" #TODO this should be fixed to be non-specific to the testing .ink file, comment line to see error.
+                    goto = None #TODO this should be fixed to be non-specific to the testing .ink file, comment line to see error.
+                    
+                    for divertiter in range(totalknotlines):
+                        divertiter = divertiter+knotline+1
+                        # print(ilines[divertiter])
+                        if ilines[divertiter].startswith('-'):
+                            if re.match(r'-> DONE', ilines[divertiter]):
+                                goto = None
 
-                    if re.match(r'-> DONE', ilines[lineiter+1]):
-                        print("End of story")
-                        return
-                    elif re.match(r'->(\w)', ilines[lineiter+1]):
-                        divert = re.match(r'->(?P<goto>\w*)', ilines[lineiter+1])
-                        goto = divert.group("goto")
+                            elif re.match(r'->(\w)', ilines[divertiter]):
+                                divert = re.match(r'->(?P<goto>\w*)', ilines[divertiter])
+                                goto = divert.group("goto")
 
 
-                        # knotline = findknot(goto)
-                        # playknot(knotline)
-                        # # print(knotline)
-                    elif re.match(r'-> (\w)', ilines[lineiter+1]):
-                        divert = re.match(r'-> (?P<goto>\w*)', ilines[lineiter+1])
-                        goto = divert.group("goto")
+                                # knotline = findknot(goto)
+                                # playknot(knotline)
+                                # print("Found")
+                            elif re.match(r'-> (\w)', ilines[divertiter]):
+                                divert = re.match(r'-> (?P<goto>\w*)', ilines[divertiter])
+                                goto = divert.group("goto")
 
-                        # knotline = findknot(goto)
-                        # playknot(knotline)
-                        # # print(
-                        
+                                # knotline = findknot(goto)
+                                # playknot(knotline)
+                                # print("Found")
+                            
+                            else:
+                                # print("Not found")
+                                goto = None
+                    
+
+                    
 
 
                     globals()["option"+str(optionnumber)] = goto
@@ -94,14 +104,14 @@ def playknot(knotline):
 
                     # Replaces variables with the variable contents 
                     if re.search(r'{(?P<varname>\w+)}', globals()["optionprevtext"+str(optionnumber)]):
-                        print("Found in prev")
+                        # print("Found in prev")
                         varline = re.search(r'{(?P<varname>\w+)}', globals()["optionprevtext"+str(optionnumber)])
                         varcontent = globals()[varline.group("varname")]
                         var = "{"+str(varline.group("varname"))+"}"
                         globals()["optionprevtext"+str(optionnumber)] = globals()["optionprevtext"+str(optionnumber)].replace(var, varcontent)
 
                     if re.search(r'{(?P<varname>\w+)}', globals()["optionfulltext"+str(optionnumber)]):
-                        print("Found in full")
+                        # print("Found in full")
                         varline = re.search(r'{(?P<varname>\w+)}', globals()["optionfulltext"+str(optionnumber)])
                         varcontent = str(globals()[varline.group("varname")])
                         var = "{"+str(varline.group("varname"))+"}"
@@ -113,23 +123,34 @@ def playknot(knotline):
                 
                     option = re.match(r'(.)(?P<text>.*)', ilines[lineiter])
                     optionnumber += 1
-                    print(str(optionnumber) + ": " + option.group("text"))
-                    if re.match(r'-> DONE', ilines[lineiter+1]):
-                        print("End of story")
-                        return
-                    elif re.match(r'->(\w)', ilines[lineiter+1]):
-                        divert = re.match(r'->(?P<goto>\w*)', ilines[lineiter+1])
-                        goto = divert.group("goto")
+                    # print(str(optionnumber) + ": " + option.group("text"))
 
-                        # knotline = findknot(goto)
-                        # playknot(knotline)
-                        # # print(knotline)
-                    elif re.match(r'-> (\w)', ilines[lineiter+1]):
-                        divert = re.match(r'-> (?P<goto>\w*)', ilines[lineiter+1])
-                        goto = divert.group("goto")
-                        # knotline = findknot(goto)
-                        # playknot(knotline)
-                        # # print(knotline
+                    for divertiter in range(totalknotlines):
+                        divertiter = divertiter+knotline+1
+                        # print(ilines[divertiter])
+                        if ilines[divertiter].startswith('-'):
+                            if re.match(r'-> DONE', ilines[divertiter]):
+                                goto = None
+
+                            elif re.match(r'->(\w)', ilines[divertiter]):
+                                divert = re.match(r'->(?P<goto>\w*)', ilines[divertiter])
+                                goto = divert.group("goto")
+
+
+                                # knotline = findknot(goto)
+                                # playknot(knotline)
+                                # print("Found")
+                            elif re.match(r'-> (\w)', ilines[divertiter]):
+                                divert = re.match(r'-> (?P<goto>\w*)', ilines[divertiter])
+                                goto = divert.group("goto")
+
+                                # knotline = findknot(goto)
+                                # playknot(knotline)
+                                # print("Found")
+                            
+                            else:
+                                # print("Not found")
+                                goto = None
 
                     globals()["option"+str(optionnumber)] = goto
                     globals()["optionfulltext"+str(optionnumber)] = option.group("text")
@@ -137,7 +158,7 @@ def playknot(knotline):
 
                     # Replaces variables with the variable contents 
                     if re.search(r'{(?P<varname>\w+)}', globals()["optionfulltext"+str(optionnumber)]):
-                        print("Found in text")
+                        # print("Found in text")
                         varline = re.search(r'{(?P<varname>\w+)}', globals()["optionfulltext"+str(optionnumber)])
                         varcontent = str(globals()[varline.group("varname")])
                         var = "{"+str(varline.group("varname"))+"}"
@@ -172,7 +193,13 @@ def playknot(knotline):
 
         print("---")
         chosenoption = input("Press the number of your choice and hit enter. \n")
-        chosenknot = findknot(globals()["option"+str(chosenoption)])
+        # print(globals()["option"+str(chosenoption)])
+        if globals()["option"+str(chosenoption)] != None:
+            chosenknot = findknot(globals()["option"+str(chosenoption)])
+        else:
+            print("---")
+            print("End of story")
+            return
         print("---")
         print(globals()["optionfulltext"+str(chosenoption)])
         playknot(chosenknot)
