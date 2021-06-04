@@ -12,6 +12,7 @@ In the shop
 ==start==
 Shopkeeper: 'Ey {playername}! What do you wish from this old fella?
 You: Hey ol' man!
+Shopkeeper: Hi!
 +[buy]You: Lemme get that hoodie.
 -> buy
 +[sell]You: Can I sell you something, got no money?
@@ -45,3 +46,4 @@ Currenty have a hoodie: {hashoodie}
 The Shopkeeper currently calls you: {playername}
 -> DONE
 
+    

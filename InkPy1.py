@@ -41,7 +41,7 @@ def playknot(knotline):
             lineiter = lineiter+knotline
             # print(ilines[lineiter])
 
-            # Finds textlines (TODO Somehow finds only two(?) when multiple are present)
+            # Finds textlines
             if not ilines[lineiter].startswith(("+","*","-","~")):
                 # Replaces variables with the variable contents
                 if re.search(r'{(?P<varname>\w+)}', ilines[lineiter]):
@@ -209,25 +209,26 @@ def playknot(knotline):
                     varnewstate = varchangeline.group("varnewstate")
                     globals()[varname] = varnewstate
 
-            # Handles lone diverts
-            for lonedivertiter in range(totalknotlines):
-                lonedivertiter = lonedivertiter+knotline+1            
-                if ilines[lonedivertiter].startswith('-'):
-                    if re.match(r'-> DONE', ilines[lonedivertiter]):
-                        print("End of story")
-                        inkstoryended = True
-                        return
-                    elif re.match(r'->(\w)', ilines[lonedivertiter]):
-                        divert = re.match(r'->(?P<goto>\w*)', ilines[lonedivertiter])
-                        goto = divert.group("goto")
+        # Handles lone diverts
+        for lonedivertiter in range(totalknotlines):
+            lonedivertiter = lonedivertiter+knotline+1
+            # print(ilines[lonedivertiter])          
+            if ilines[lonedivertiter].startswith('-'):
+                if re.match(r'-> DONE', ilines[lonedivertiter]):
+                    print("End of story")
+                    inkstoryended = True
+                    return
+                elif re.match(r'->(\w)', ilines[lonedivertiter]):
+                    divert = re.match(r'->(?P<goto>\w*)', ilines[lonedivertiter])
+                    goto = divert.group("goto")
 
-                        knotline = findknot(goto)
-                        playknot(knotline)
-                    elif re.match(r'-> (\w)', ilines[lonedivertiter+1]):
-                        divert = re.match(r'-> (?P<goto>\w*)', ilines[lonedivertiter])
-                        goto = divert.group("goto")
-                        knotline = findknot(goto)
-                        playknot(knotline)
+                    knotline = findknot(goto)
+                    playknot(knotline)
+                elif re.match(r'-> (\w)', ilines[lonedivertiter+1]):
+                    divert = re.match(r'-> (?P<goto>\w*)', ilines[lonedivertiter])
+                    goto = divert.group("goto")
+                    knotline = findknot(goto)
+                    playknot(knotline)
 
         print("---")
         chosenoption = input("Press the number of your choice and hit enter. \n")
