@@ -1,4 +1,4 @@
-VAR playername = "player"
+VAR playername = "player aa"
 VAR money = 10
 VAR hashoodie = false
 
