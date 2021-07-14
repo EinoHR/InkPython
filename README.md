@@ -1,13 +1,8 @@
 ## What works
-* Diverts
-* Knots
-* Choices (Non-varying)
-* Variables (Basic maths, No "Variable text")
+* Assigning global variables
 
 ## Considerations
-* Currently two empty lines must be left at the end of the file for technical reasons
-* Multi-line comments don't work yet, instead use '//' in the front of every line of the multi-line comment.
-
+* None yet
 ## TODO
-* Python module
+* Python module (on it)
     * Example script and discord bot using it
