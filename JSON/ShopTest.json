@@ -1,1 +1,318 @@
-{"inkVersion":19,"root":[[{"->":"start"},["done",{"#f":5,"#n":"g-0"}],null],"done",{"start":[["^'Ey ","ev",{"VAR?":"playername"},"out","/ev","^! What do you wish from this old fella?","\n","ev","str","^buy","/str","/ev",{"*":".^.c-0","flg":4},"ev","str","^sell","/str","/ev",{"*":".^.c-1","flg":4},"ev","str","^talk","/str","/ev",{"*":".^.c-2","flg":4},{"c-0":["^Lemme get that hoodie.","\n",{"->":"buy"},{"#f":5}],"c-1":["^Can I sell you something, got no money?","\n",{"->":"sell"},{"#f":5}],"c-2":["^Ay ol' man, what are you selling?","\n",{"->":"talk"},{"#f":5}]}],{"#f":1}],"buy":[["^Oh, this?","\n",["ev",{"^->":"buy.0.2.$r1"},{"temp=":"$r"},"str",{"->":".^.s"},[{"#n":"$r1"}],"/str","/ev",{"*":".^.^.c-0","flg":2},{"s":["^Yes! ",{"->":"$r","var":true},null]}],{"c-0":["ev",{"^->":"buy.0.c-0.$r2"},"/ev",{"temp=":"$r"},{"->":".^.^.2.s"},[{"#n":"$r2"}],"done","\n",{"#f":5}]}],{"#f":1}],"sell":[["^What do you offer?","\n",["ev",{"^->":"sell.0.2.$r1"},{"temp=":"$r"},"str",{"->":".^.s"},[{"#n":"$r1"}],"/str","/ev",{"*":".^.^.c-0","flg":2},{"s":["^Nevermind, nothing.",{"->":"$r","var":true},null]}],{"c-0":["ev",{"^->":"sell.0.c-0.$r2"},"/ev",{"temp=":"$r"},{"->":".^.^.2.s"},[{"#n":"$r2"}],"\n",{"->":"start"},{"#f":5}]}],{"#f":1}],"talk":[["^Well, I've only got hoodies.","\n",["ev",{"^->":"talk.0.2.$r1"},{"temp=":"$r"},"str",{"->":".^.s"},[{"#n":"$r1"}],"/str","/ev",{"*":".^.^.c-0","flg":2},{"s":["^Ok, lemme have one ",{"->":"$r","var":true},null]}],{"c-0":["ev",{"^->":"talk.0.c-0.$r2"},"/ev",{"temp=":"$r"},{"->":".^.^.2.s"},[{"#n":"$r2"}],"\n",{"->":"buy"},{"#f":5}]}],{"#f":1}],"global decl":["ev","str","^playername","/str",{"VAR=":"playername"},"/ev","end",null],"#f":1}],"listDefs":{}}
+{
+    "inkVersion": 19,
+    "root": [
+        [
+            {
+                "->": "start"
+            },
+            [
+                "done",
+                {
+                    "#f": 5,
+                    "#n": "g-0"
+                }
+            ],
+            null
+        ],
+        "done",
+        {
+            "start": [
+                [
+                    "^'Ey ",
+                    "ev",
+                    {
+                        "VAR?": "playername"
+                    },
+                    "out",
+                    "/ev",
+                    "^! What do you wish from this old fella?",
+                    "\n",
+                    "ev",
+                    "str",
+                    "^buy",
+                    "/str",
+                    "/ev",
+                    {
+                        "*": ".^.c-0",
+                        "flg": 4
+                    },
+                    "ev",
+                    "str",
+                    "^sell",
+                    "/str",
+                    "/ev",
+                    {
+                        "*": ".^.c-1",
+                        "flg": 4
+                    },
+                    "ev",
+                    "str",
+                    "^talk",
+                    "/str",
+                    "/ev",
+                    {
+                        "*": ".^.c-2",
+                        "flg": 4
+                    },
+                    {
+                        "c-0": [
+                            "^Lemme get that hoodie.",
+                            "\n",
+                            {
+                                "->": "buy"
+                            },
+                            {
+                                "#f": 5
+                            }
+                        ],
+                        "c-1": [
+                            "^Can I sell you something, got no money?",
+                            "\n",
+                            {
+                                "->": "sell"
+                            },
+                            {
+                                "#f": 5
+                            }
+                        ],
+                        "c-2": [
+                            "^Ay ol' man, what are you selling?",
+                            "\n",
+                            {
+                                "->": "talk"
+                            },
+                            {
+                                "#f": 5
+                            }
+                        ]
+                    }
+                ],
+                {
+                    "#f": 1
+                }
+            ],
+            "buy": [
+                [
+                    "^Oh, this?",
+                    "\n",
+                    [
+                        "ev",
+                        {
+                            "^->": "buy.0.2.$r1"
+                        },
+                        {
+                            "temp=": "$r"
+                        },
+                        "str",
+                        {
+                            "->": ".^.s"
+                        },
+                        [
+                            {
+                                "#n": "$r1"
+                            }
+                        ],
+                        "/str",
+                        "/ev",
+                        {
+                            "*": ".^.^.c-0",
+                            "flg": 2
+                        },
+                        {
+                            "s": [
+                                "^Yes! ",
+                                {
+                                    "->": "$r",
+                                    "var": true
+                                },
+                                null
+                            ]
+                        }
+                    ],
+                    {
+                        "c-0": [
+                            "ev",
+                            {
+                                "^->": "buy.0.c-0.$r2"
+                            },
+                            "/ev",
+                            {
+                                "temp=": "$r"
+                            },
+                            {
+                                "->": ".^.^.2.s"
+                            },
+                            [
+                                {
+                                    "#n": "$r2"
+                                }
+                            ],
+                            "done",
+                            "\n",
+                            {
+                                "#f": 5
+                            }
+                        ]
+                    }
+                ],
+                {
+                    "#f": 1
+                }
+            ],
+            "sell": [
+                [
+                    "^What do you offer?",
+                    "\n",
+                    [
+                        "ev",
+                        {
+                            "^->": "sell.0.2.$r1"
+                        },
+                        {
+                            "temp=": "$r"
+                        },
+                        "str",
+                        {
+                            "->": ".^.s"
+                        },
+                        [
+                            {
+                                "#n": "$r1"
+                            }
+                        ],
+                        "/str",
+                        "/ev",
+                        {
+                            "*": ".^.^.c-0",
+                            "flg": 2
+                        },
+                        {
+                            "s": [
+                                "^Nevermind, nothing.",
+                                {
+                                    "->": "$r",
+                                    "var": true
+                                },
+                                null
+                            ]
+                        }
+                    ],
+                    {
+                        "c-0": [
+                            "ev",
+                            {
+                                "^->": "sell.0.c-0.$r2"
+                            },
+                            "/ev",
+                            {
+                                "temp=": "$r"
+                            },
+                            {
+                                "->": ".^.^.2.s"
+                            },
+                            [
+                                {
+                                    "#n": "$r2"
+                                }
+                            ],
+                            "\n",
+                            {
+                                "->": "start"
+                            },
+                            {
+                                "#f": 5
+                            }
+                        ]
+                    }
+                ],
+                {
+                    "#f": 1
+                }
+            ],
+            "talk": [
+                [
+                    "^Well, I've only got hoodies.",
+                    "\n",
+                    [
+                        "ev",
+                        {
+                            "^->": "talk.0.2.$r1"
+                        },
+                        {
+                            "temp=": "$r"
+                        },
+                        "str",
+                        {
+                            "->": ".^.s"
+                        },
+                        [
+                            {
+                                "#n": "$r1"
+                            }
+                        ],
+                        "/str",
+                        "/ev",
+                        {
+                            "*": ".^.^.c-0",
+                            "flg": 2
+                        },
+                        {
+                            "s": [
+                                "^Ok, lemme have one ",
+                                {
+                                    "->": "$r",
+                                    "var": true
+                                },
+                                null
+                            ]
+                        }
+                    ],
+                    {
+                        "c-0": [
+                            "ev",
+                            {
+                                "^->": "talk.0.c-0.$r2"
+                            },
+                            "/ev",
+                            {
+                                "temp=": "$r"
+                            },
+                            {
+                                "->": ".^.^.2.s"
+                            },
+                            [
+                                {
+                                    "#n": "$r2"
+                                }
+                            ],
+                            "\n",
+                            {
+                                "->": "buy"
+                            },
+                            {
+                                "#f": 5
+                            }
+                        ]
+                    }
+                ],
+                {
+                    "#f": 1
+                }
+            ],
+            "global decl": [
+                "ev",
+                "str",
+                "^playername",
+                "/str",
+                {
+                    "VAR=": "playername"
+                },
+                "/ev",
+                "end",
+                null
+            ],
+            "#f": 1
+        }
+    ],
+    "listDefs": {}
+}
