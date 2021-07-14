@@ -1,30 +1,22 @@
 import json
 
-inkjsonpath = open('./ShopTest.json', "r")
-inkjson = json.loads((inkjsonpath).read())
+inkjsonpath = open('./ShopTest.json', "r", encoding="utf-8-sig")
+inkjson = json.loads(inkjsonpath.read())
 
-# ALL OF THE CODE IS COMMENTED DUE TO ME BEING UNABLE TO PARSE NESTED JSON FILES
+inkroot = inkjson["root"]
 
+def storyvars():
+    globaldecl = inkroot[2]["global decl"]
+    i = 0
+    for item in globaldecl:
+        if item == "str":
+            tempvar = globaldecl[i+1][1 : : ]
+            exec("storyvars."+globaldecl[i+3].get("VAR=") +"="+ '"'+tempvar+'"')
+        elif str(item).isnumeric():
+            tempvar = item
+            exec("storyvars."+globaldecl[i+1].get("VAR=") +"="+str(tempvar))
 
-# inkroot = dict(inkjson["root"])
-# inkroot = dict.fromkeys(inkjson["root"])
+        i += 1
 
-
-# def get_simple_keys(data):
-#     result = []
-#     for x in data:
-#             inkroot[inkjson['root']] = {}
-#             keys = x.keys()
-#             result = keys
-#             values = x.values()
-#             # for k in x.keys():
-#             #     if k =='root': continue
-#             #     inkroot[x['root']][k]=x[k]
-#     return result
-
-# print(get_simple_keys(inkjson))
-
-# value = inkjson['root']
-# print(value)
-
-# print(inkjson["root"]["start"])
+storyvars()
+print(storyvars.playername)
